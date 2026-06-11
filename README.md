@@ -17,25 +17,23 @@ Edit `scripts.json` and add an entry:
 {
   "name": "My Script",
   "description": "One or two sentences about what it does.",
-  "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/ID/raw/script.js",
-  "gist_url":  "https://gist.github.com/rocklobster42195/ID",
-  "tags":      ["mqtt", "presence"],
-  "icon":      "mdi:home-account",
-  "color":     "#2dba6d",
-  "screenshot": "screenshots/my-script.webp"
+  "gist_raw":    "https://gist.githubusercontent.com/rocklobster42195/ID/raw/script.js",
+  "tags":        ["mqtt", "presence"],
+  "icon":        "mdi:home-account",
+  "color":       "#2dba6d",
+  "screenshot":  "screenshots/my-script.webp"
 }
 ```
 
-| Field        | Required | Notes                                              |
-|--------------|----------|----------------------------------------------------|
-| `name`       | ✅        |                                                    |
-| `description`| ✅        |                                                    |
-| `gist_raw`   | ✅        | Raw URL to the `.js` file                          |
-| `gist_url`   | ✅        | Link to the Gist page                              |
-| `tags`       | ✅        | Used for filtering                                 |
+| Field        | Required | Notes                                                                 |
+|--------------|----------|-----------------------------------------------------------------------|
+| `name`       | ✅        |                                                                       |
+| `description`| ✅        |                                                                       |
+| `gist_raw`   | ✅        | Raw URL to the `.js` file — `gist_url` and version badge are derived automatically |
+| `tags`       | ✅        | Used for filtering                                                    |
 | `icon`       | ✅        | Any [MDI icon](https://pictogrammers.com/library/mdi/) — `mdi:robot` |
-| `color`      | ❌        | Hex color for the icon placeholder                 |
-| `screenshot` | ❌        | Path relative to repo root, e.g. `screenshots/my-script.webp` |
+| `color`      | ❌        | Hex color for the icon placeholder                                    |
+| `screenshot` | ❌        | Path relative to repo root — `screenshots/my-script.webp`            |
 
 ### Screenshot guidelines
 

@@ -5,6 +5,15 @@ let scripts = [];
 let activeTag = localStorage.getItem(ACTIVE_TAG_KEY) || 'all';
 const gistMetaCache = new Map();
 
+function parseGistRaw(rawUrl) {
+  const m = rawUrl && rawUrl.match(/gist\.githubusercontent\.com\/([^/]+)\/([^/]+)\/raw/);
+  if (!m) return {};
+  return {
+    gist_id: m[2],
+    gist_url: `https://gist.github.com/${m[1]}/${m[2]}`
+  };
+}
+
 function getJsaUrl() {
   return (localStorage.getItem(JSA_URL_KEY) || '').replace(/\/$/, '');
 }
@@ -81,14 +90,15 @@ function renderTags() {
 
 // Gist version fetching
 async function loadGistMeta(script, card) {
-  if (!script.gist_id) return;
+  const { gist_id } = parseGistRaw(script.gist_raw);
+  if (!gist_id) return;
   try {
-    let data = gistMetaCache.get(script.gist_id);
+    let data = gistMetaCache.get(gist_id);
     if (!data) {
-      const res = await fetch(`https://api.github.com/gists/${script.gist_id}`);
+      const res = await fetch(`https://api.github.com/gists/${gist_id}`);
       if (!res.ok) return;
       data = await res.json();
-      gistMetaCache.set(script.gist_id, data);
+      gistMetaCache.set(gist_id, data);
     }
     if (!data.updated_at) return;
     const days = Math.floor((Date.now() - new Date(data.updated_at)) / 86400000);
@@ -127,7 +137,7 @@ function createCard(script) {
     <div class="card-description">${escHtml(script.description)}</div>
     <div class="card-meta">
       <div class="card-tags">${(script.tags || []).map(t => `<span class="tag">${escHtml(t)}</span>`).join('')}</div>
-      ${script.gist_id ? `<span class="card-updated">—</span>` : ''}
+      ${parseGistRaw(script.gist_raw).gist_id ? `<span class="card-updated">—</span>` : ''}
     </div>
   `;
   card.appendChild(body);
@@ -151,7 +161,7 @@ function createCard(script) {
 
   const gistLink = document.createElement('a');
   gistLink.className = 'btn-gist';
-  gistLink.href = script.gist_url;
+  gistLink.href = parseGistRaw(script.gist_raw).gist_url || script.gist_raw;
   gistLink.target = '_blank';
   gistLink.rel = 'noopener noreferrer';
   gistLink.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> Source`;
@@ -173,7 +183,7 @@ function buildPlaceholder(script) {
     <div class="icon-wrap" style="background:${escHtml(color)}22; color:${escHtml(color)}">
       <i class="${mdiClass(script.icon)}" style="color:${escHtml(color)}"></i>
     </div>
-    <span class="tag-label">${escHtml((script.tags || ['script'])[0])}</span>`;
+    `;
   return div;
 }
 
