@@ -3,6 +3,7 @@ const ACTIVE_TAG_KEY = 'jsa_active_tag';
 
 let scripts = [];
 let activeTag = localStorage.getItem(ACTIVE_TAG_KEY) || 'all';
+const gistMetaCache = new Map();
 
 function getJsaUrl() {
   return (localStorage.getItem(JSA_URL_KEY) || '').replace(/\/$/, '');
@@ -78,9 +79,27 @@ function renderTags() {
   });
 }
 
+// Gist version fetching
+async function loadGistMeta(script, card) {
+  if (!script.gist_id) return;
+  try {
+    let data = gistMetaCache.get(script.gist_id);
+    if (!data) {
+      const res = await fetch(`https://api.github.com/gists/${script.gist_id}`);
+      if (!res.ok) return;
+      data = await res.json();
+      gistMetaCache.set(script.gist_id, data);
+    }
+    if (!data.updated_at) return;
+    const days = Math.floor((Date.now() - new Date(data.updated_at)) / 86400000);
+    const label = days === 0 ? 'today' : days === 1 ? 'yesterday' : `${days}d ago`;
+    const el = card.querySelector('.card-updated');
+    if (el) el.textContent = `Updated ${label}`;
+  } catch {}
+}
+
 // Card rendering
 function mdiClass(icon) {
-  // Convert "mdi:robot" or "mdi-robot" to MDI CSS class "mdi mdi-robot"
   if (!icon) return 'mdi mdi-code-braces';
   return 'mdi mdi-' + icon.replace(/^mdi[:-]/, '');
 }
@@ -90,7 +109,6 @@ function createCard(script) {
   const card = document.createElement('div');
   card.className = 'card';
 
-  // Image / placeholder
   if (script.screenshot) {
     const img = document.createElement('img');
     img.className = 'card-image';
@@ -102,21 +120,23 @@ function createCard(script) {
     card.appendChild(buildPlaceholder(script));
   }
 
-  // Body
   const body = document.createElement('div');
   body.className = 'card-body';
   body.innerHTML = `
     <div class="card-name">${escHtml(script.name)}</div>
     <div class="card-description">${escHtml(script.description)}</div>
-    <div class="card-tags">${(script.tags || []).map(t => `<span class="tag">${escHtml(t)}</span>`).join('')}</div>
+    <div class="card-meta">
+      <div class="card-tags">${(script.tags || []).map(t => `<span class="tag">${escHtml(t)}</span>`).join('')}</div>
+      ${script.gist_id ? `<span class="card-updated">—</span>` : ''}
+    </div>
   `;
   card.appendChild(body);
 
-  // Footer
   const footer = document.createElement('div');
   footer.className = 'card-footer';
 
   const addBtn = document.createElement('button');
+  addBtn.type = 'button';
   addBtn.className = 'btn-add' + (jsaUrl ? '' : ' no-url');
   addBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add to JSA`;
   addBtn.title = jsaUrl ? `Import into ${jsaUrl}` : 'Configure your JSA URL first';
@@ -139,6 +159,8 @@ function createCard(script) {
   footer.appendChild(addBtn);
   footer.appendChild(gistLink);
   card.appendChild(footer);
+
+  loadGistMeta(script, card);
 
   return card;
 }
@@ -176,7 +198,6 @@ function renderGrid() {
   filtered.forEach(s => grid.appendChild(createCard(s)));
 }
 
-// Init
 async function init() {
   updateBanner();
   try {

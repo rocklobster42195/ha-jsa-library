@@ -259,10 +259,23 @@ main {
   color: var(--text-muted);
   flex: 1;
 }
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 .card-tags {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
+}
+.card-updated {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  opacity: 0.7;
 }
 .tag {
   background: var(--tag-bg);
