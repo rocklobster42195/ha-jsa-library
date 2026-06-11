@@ -214,7 +214,7 @@ function renderGrid() {
   grid.innerHTML = '';
   const filtered = activeTags.size === 0
     ? scripts
-    : scripts.filter(s => (s.tags || []).some(t => activeTags.has(t)));
+    : scripts.filter(s => [...activeTags].every(t => (s.tags || []).includes(t)));
 
   if (!filtered.length) {
     const empty = document.createElement('div');
