@@ -1,12 +1,12 @@
 [
   {
-    "name": "Presence Tracker",
-    "description": "Detects presence via MQTT topics and updates a Home Assistant input_boolean. Configurable device list and debounce time via script header.",
-    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/presence-tracker.js",
-    "tags": ["presence", "mqtt"],
-    "icon": "mdi:account-check",
+    "name": "OpenLigaDB",
+    "description": "Multi-team football tracker with configurable cards.",
+    "gist_raw": "https://gist.github.com/rocklobster42195/c46f3bc1dd15f0d1579893f108c76c49/raw/28b1b071087323ec1d1db1ec1ae253a8e141ec02/OpenLigaDB.js",
+    "tags": ["JSA Pack", "card"],
+    "icon": "mdi:soccer",
     "color": "#2dba6d",
-    "screenshot": "https://placehold.co/800x450/222228/2dba6d?text=Presence+Tracker&font=open-sans"
+    "screenshot": "screenshots/openligadb_card.png"
   },
   {
     "name": "Climate Scheduler",
@@ -16,50 +16,5 @@
     "icon": "mdi:thermometer",
     "color": "#e67e22",
     "screenshot": "https://placehold.co/800x450/222228/e67e22?text=Climate+Scheduler&font=open-sans"
-  },
-  {
-    "name": "Battery Monitor",
-    "description": "Scans all battery entities in Home Assistant and sends a notification when any device drops below a configurable threshold.",
-    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/battery-monitor.js",
-    "tags": ["monitoring", "notification"],
-    "icon": "mdi:battery-alert",
-    "color": "#e74c3c",
-    "screenshot": ""
-  },
-  {
-    "name": "Sunrise Lights",
-    "description": "Gradually brightens selected lights before wake-up time, simulating a sunrise. Wake time is read from a HA input_datetime helper.",
-    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/sunrise-lights.js",
-    "tags": ["light", "scheduler"],
-    "icon": "mdi:weather-sunset-up",
-    "color": "#f39c12",
-    "screenshot": ""
-  },
-  {
-    "name": "MQTT Device Bridge",
-    "description": "Bridges arbitrary MQTT topics to Home Assistant entities. Configurable topic map in the script header — no code changes needed for new devices.",
-    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/mqtt-bridge.js",
-    "tags": ["mqtt", "integration"],
-    "icon": "mdi:transit-connection-variant",
-    "color": "#8e44ad",
-    "screenshot": ""
-  },
-  {
-    "name": "Scene Rotator",
-    "description": "Cycles through a list of light scenes on a schedule or via a button press. Useful for ambiance automation in living areas.",
-    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/scene-rotator.js",
-    "tags": ["light", "scene", "button"],
-    "icon": "mdi:lightbulb-group",
-    "color": "#d4a017",
-    "screenshot": ""
-  },
-  {
-    "name": "Sensor Dashboard Publisher",
-    "description": "Aggregates multiple sensor readings and publishes a formatted summary to an MQTT topic or a HA markdown card helper every minute.",
-    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/sensor-dashboard.js",
-    "tags": ["sensor", "monitoring", "mqtt"],
-    "icon": "mdi:chart-line",
-    "color": "#2980b9",
-    "screenshot": ""
   }
 ]
