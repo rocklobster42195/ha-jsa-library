@@ -39,6 +39,7 @@ btnSaveUrl.addEventListener('click', () => {
   updateBanner();
   renderGrid();
 });
+document.getElementById('btnBannerClose').addEventListener('click', () => banner.classList.add('hidden'));
 jsaUrlInput.addEventListener('keydown', e => { if (e.key === 'Enter') btnSaveUrl.click(); });
 
 // Config modal

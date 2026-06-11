@@ -31,6 +31,7 @@
       <div class="setup-input-row">
         <input type="url" id="jsaUrlInput" placeholder="http://192.168.1.100:8123" />
         <button type="button" class="btn-save" id="btnSaveUrl">Save</button>
+        <button type="button" class="btn-banner-close" id="btnBannerClose" title="Dismiss">✕</button>
       </div>
     </div>
   </div>
@@ -44,7 +45,7 @@
     <div class="grid" id="grid"></div>
   </main>
 
-  <div class="modal-overlay" id="configModal">
+  <div class="modal-overlay hidden" id="configModal">
     <div class="modal">
       <h3>JSA URL</h3>
       <p>Enter the address of your JS Automations addon.</p>

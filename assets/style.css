@@ -111,6 +111,18 @@ header {
 .setup-input-row input:focus, .modal input:focus {
   border-color: var(--accent);
 }
+.btn-banner-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  border-radius: 6px;
+  transition: color .15s;
+}
+.btn-banner-close:hover { color: var(--text); }
 .btn-save, .btn-primary {
   background: var(--accent);
   color: #fff;
