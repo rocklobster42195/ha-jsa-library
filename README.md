@@ -5,7 +5,7 @@ A curated collection of scripts for the [JS Automations](https://github.com/rock
 ## Usage
 
 1. Open the library at **https://rocklobster42195.github.io/ha-jsa-library/**
-2. Click **JSA URL** (top right) and enter your addon address, e.g. `http://192.168.1.100:8099`
+2. Click **JSA URL** (top right) and enter your addon address, e.g. `http://192.168.1.100:8123`
 3. Click **Add to JSA** on any script — the import wizard opens with the URL pre-filled
 4. Click **Preview**, then **Import**
 

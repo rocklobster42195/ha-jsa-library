@@ -2,7 +2,7 @@ const JSA_URL_KEY = 'jsa_base_url';
 const ACTIVE_TAG_KEY = 'jsa_active_tag';
 
 let scripts = [];
-let activeTag = localStorage.getItem(ACTIVE_TAG_KEY) || 'all';
+let activeTags = new Set(JSON.parse(localStorage.getItem(ACTIVE_TAG_KEY) || '[]'));
 const gistMetaCache = new Map();
 
 function parseGistRaw(rawUrl) {
@@ -70,18 +70,38 @@ function getAllTags() {
   return ['all', ...Array.from(set).sort()];
 }
 
+function saveTags() {
+  localStorage.setItem(ACTIVE_TAG_KEY, JSON.stringify([...activeTags]));
+}
+
 function renderTags() {
   const container = document.getElementById('tagFilter');
   container.innerHTML = '';
-  getAllTags().forEach(tag => {
+
+  // "All" button
+  const allBtn = document.createElement('button');
+  allBtn.type = 'button';
+  allBtn.className = 'tag-btn' + (activeTags.size === 0 ? ' active' : '');
+  allBtn.textContent = 'All';
+  allBtn.addEventListener('click', () => {
+    activeTags.clear();
+    saveTags();
+    renderTags();
+    renderGrid();
+  });
+  container.appendChild(allBtn);
+
+  // Tag buttons (multi-select)
+  getAllTags().slice(1).forEach(tag => {
     const btn = document.createElement('button');
-    btn.className = 'tag-btn' + (tag === activeTag ? ' active' : '');
-    btn.textContent = tag === 'all' ? 'All' : tag;
+    btn.type = 'button';
+    btn.className = 'tag-btn' + (activeTags.has(tag) ? ' active' : '');
+    btn.textContent = tag;
     btn.addEventListener('click', () => {
-      activeTag = tag;
-      localStorage.setItem(ACTIVE_TAG_KEY, tag);
-      document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      if (activeTags.has(tag)) activeTags.delete(tag);
+      else activeTags.add(tag);
+      saveTags();
+      renderTags();
       renderGrid();
     });
     container.appendChild(btn);
@@ -147,15 +167,11 @@ function createCard(script) {
 
   const addBtn = document.createElement('button');
   addBtn.type = 'button';
-  addBtn.className = 'btn-add' + (jsaUrl ? '' : ' no-url');
+  addBtn.className = 'btn-add';
+  addBtn.disabled = !jsaUrl;
   addBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add to JSA`;
-  addBtn.title = jsaUrl ? `Import into ${jsaUrl}` : 'Configure your JSA URL first';
+  addBtn.title = jsaUrl ? `Import into ${jsaUrl}` : 'Set your JSA URL first (top right)';
   addBtn.addEventListener('click', () => {
-    if (!jsaUrl) {
-      configModal.classList.remove('hidden');
-      modalUrlInput.focus();
-      return;
-    }
     window.open(`${jsaUrl}/?import=${encodeURIComponent(script.gist_raw)}`, '_blank');
   });
 
@@ -164,6 +180,7 @@ function createCard(script) {
   gistLink.href = parseGistRaw(script.gist_raw).gist_url || script.gist_raw;
   gistLink.target = '_blank';
   gistLink.rel = 'noopener noreferrer';
+  gistLink.title = 'View source on GitHub Gist';
   gistLink.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> Source`;
 
   footer.appendChild(addBtn);
@@ -194,9 +211,9 @@ function escHtml(str) {
 function renderGrid() {
   const grid = document.getElementById('grid');
   grid.innerHTML = '';
-  const filtered = activeTag === 'all'
+  const filtered = activeTags.size === 0
     ? scripts
-    : scripts.filter(s => (s.tags || []).includes(activeTag));
+    : scripts.filter(s => (s.tags || []).some(t => activeTags.has(t)));
 
   if (!filtered.length) {
     const empty = document.createElement('div');
