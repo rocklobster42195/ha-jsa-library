@@ -1,18 +1,18 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #0f1117;
-  --surface: #1a1d27;
-  --surface-2: #22263a;
-  --border: #2e3349;
-  --accent: #6c8eff;
-  --accent-hover: #8aa4ff;
-  --text: #e2e5f0;
-  --text-muted: #7a809e;
-  --tag-bg: #252a3d;
-  --tag-text: #8fa3ff;
+  --bg: #0d1411;
+  --surface: #131f1a;
+  --surface-2: #1a2e22;
+  --border: #1e3a2a;
+  --accent: #2dba6d;
+  --accent-hover: #3dd880;
+  --text: #e0ece6;
+  --text-muted: #6a9178;
+  --tag-bg: #162a1e;
+  --tag-text: #5ecb8a;
   --radius: 12px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow: 0 4px 24px rgba(0,0,0,0.5);
 }
 
 body {
@@ -192,13 +192,20 @@ main {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   color: var(--text-muted);
 }
-.card-placeholder svg {
-  width: 36px;
-  height: 36px;
-  stroke: var(--border);
+.card-placeholder .icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(45,186,109,0.12);
+}
+.card-placeholder .icon-wrap i {
+  font-size: 28px;
 }
 .card-placeholder .tag-label {
   font-size: 12px;

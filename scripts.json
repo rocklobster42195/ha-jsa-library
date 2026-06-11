@@ -5,6 +5,8 @@
     "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/example.js",
     "gist_url": "https://gist.github.com/rocklobster42195/REPLACE",
     "tags": ["example"],
+    "icon": "mdi:code-braces",
+    "color": "#2dba6d",
     "screenshot": ""
   }
 ]

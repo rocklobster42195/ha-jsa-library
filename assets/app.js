@@ -79,10 +79,10 @@ function renderTags() {
 }
 
 // Card rendering
-function placeholderSvg() {
-  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-  </svg>`;
+function mdiClass(icon) {
+  // Convert "mdi:robot" or "mdi-robot" to MDI CSS class "mdi mdi-robot"
+  if (!icon) return 'mdi mdi-code-braces';
+  return 'mdi mdi-' + icon.replace(/^mdi[:-]/, '');
 }
 
 function createCard(script) {
@@ -144,9 +144,14 @@ function createCard(script) {
 }
 
 function buildPlaceholder(script) {
+  const color = script.color || 'var(--accent)';
   const div = document.createElement('div');
   div.className = 'card-placeholder';
-  div.innerHTML = placeholderSvg() + `<span class="tag-label">${escHtml((script.tags || ['script'])[0])}</span>`;
+  div.innerHTML = `
+    <div class="icon-wrap" style="background:${escHtml(color)}22; color:${escHtml(color)}">
+      <i class="${mdiClass(script.icon)}" style="color:${escHtml(color)}"></i>
+    </div>
+    <span class="tag-label">${escHtml((script.tags || ['script'])[0])}</span>`;
   return div;
 }
 
