@@ -5,16 +5,20 @@
     "gist_raw": "https://gist.github.com/rocklobster42195/c46f3bc1dd15f0d1579893f108c76c49/raw/28b1b071087323ec1d1db1ec1ae253a8e141ec02/OpenLigaDB.js",
     "tags": ["JSA Pack", "card"],
     "icon": "mdi:soccer",
-    "color": "#2dba6d",
-    "screenshot": "screenshots/openligadb_card.png"
+    "color": "#009A44",
+    "screenshot": "screenshots/openligadb_card.png",
+    "pinned": true,
+    "author": "rocklobster42195"
   },
   {
-    "name": "Climate Scheduler",
-    "description": "Sets heating setpoints based on time-of-day slots and calendar events. Supports multiple thermostats and away mode.",
-    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/climate-scheduler.js",
-    "tags": ["climate", "scheduler"],
-    "icon": "mdi:thermometer",
-    "color": "#e67e22",
-    "screenshot": "https://placehold.co/800x450/222228/e67e22?text=Climate+Scheduler&font=open-sans"
+    "name": "Tedee Keypad",
+    "description": "Mini integration for Tedee Keypad via the Tedee Cloud API. Since keypad settings are not exposed through the local API, this integration provides access to key keypad functions, including battery level monitoring, beep volume control, lock-on-button-press configuration, and battery type selection. The keypad is automatically created and registered as a Home Assistant device.",
+    "gist_raw": "https://gist.github.com/rocklobster42195/f21e5f771412d6570d2f2abb3254ac43/raw/9fe4ebc70d5f33eada267dfccf50024f1047b88a/TedeeKeypad.ts",
+    "tags": ["integration"],
+    "icon": "mdi:lock-smart",
+    "color": "#00b4f0",
+    "screenshot": "",
+    "pinned": true,
+    "author": "rocklobster42195"
   }
 ]
