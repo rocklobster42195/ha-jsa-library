@@ -1,12 +1,52 @@
 [
   {
-    "name": "Example Script",
-    "description": "A short example to show how script entries look. Replace with your real scripts.",
-    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/example.js",
+    "name": "Presence Tracker",
+    "description": "Detects presence via MQTT topics and updates a Home Assistant input_boolean. Configurable device list and debounce time via script header.",
+    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/presence-tracker.js",
     "gist_url": "https://gist.github.com/rocklobster42195/REPLACE",
-    "tags": ["example"],
-    "icon": "mdi:code-braces",
+    "tags": ["presence", "mqtt"],
+    "icon": "mdi:account-check",
     "color": "#2dba6d",
+    "screenshot": ""
+  },
+  {
+    "name": "Climate Scheduler",
+    "description": "Sets heating setpoints based on time-of-day slots and calendar events. Supports multiple thermostats and away mode.",
+    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/climate-scheduler.js",
+    "gist_url": "https://gist.github.com/rocklobster42195/REPLACE",
+    "tags": ["climate", "scheduler"],
+    "icon": "mdi:thermometer",
+    "color": "#e67e22",
+    "screenshot": ""
+  },
+  {
+    "name": "Battery Monitor",
+    "description": "Scans all battery entities in Home Assistant and sends a notification when any device drops below a configurable threshold.",
+    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/battery-monitor.js",
+    "gist_url": "https://gist.github.com/rocklobster42195/REPLACE",
+    "tags": ["monitoring", "notification"],
+    "icon": "mdi:battery-alert",
+    "color": "#e74c3c",
+    "screenshot": ""
+  },
+  {
+    "name": "Sunrise Lights",
+    "description": "Gradually brightens selected lights before wake-up time, simulating a sunrise. Wake time is read from a HA input_datetime helper.",
+    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/sunrise-lights.js",
+    "gist_url": "https://gist.github.com/rocklobster42195/REPLACE",
+    "tags": ["light", "scheduler"],
+    "icon": "mdi:weather-sunset-up",
+    "color": "#f39c12",
+    "screenshot": ""
+  },
+  {
+    "name": "MQTT Device Bridge",
+    "description": "Bridges arbitrary MQTT topics to Home Assistant entities. Configurable topic map in the script header — no code changes needed for new devices.",
+    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/mqtt-bridge.js",
+    "gist_url": "https://gist.github.com/rocklobster42195/REPLACE",
+    "tags": ["mqtt", "integration"],
+    "icon": "mdi:transit-connection-variant",
+    "color": "#8e44ad",
     "screenshot": ""
   }
 ]
