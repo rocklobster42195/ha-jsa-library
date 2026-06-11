@@ -2,7 +2,7 @@ const JSA_URL_KEY = 'jsa_base_url';
 const ACTIVE_TAG_KEY = 'jsa_active_tag';
 
 let scripts = [];
-let activeTags = new Set(JSON.parse(localStorage.getItem(ACTIVE_TAG_KEY) || '[]'));
+let activeTags = (() => { try { return new Set(JSON.parse(localStorage.getItem(ACTIVE_TAG_KEY) || '[]')); } catch { localStorage.removeItem(ACTIVE_TAG_KEY); return new Set(); } })();
 const gistMetaCache = new Map();
 
 function parseGistRaw(rawUrl) {
