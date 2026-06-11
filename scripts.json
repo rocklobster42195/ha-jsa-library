@@ -48,5 +48,25 @@
     "icon": "mdi:transit-connection-variant",
     "color": "#8e44ad",
     "screenshot": ""
+  },
+  {
+    "name": "Scene Rotator",
+    "description": "Cycles through a list of light scenes on a schedule or via a button press. Useful for ambiance automation in living areas.",
+    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/scene-rotator.js",
+    "gist_url": "https://gist.github.com/rocklobster42195/REPLACE",
+    "tags": ["light", "scene", "button"],
+    "icon": "mdi:lightbulb-group",
+    "color": "#d4a017",
+    "screenshot": ""
+  },
+  {
+    "name": "Sensor Dashboard Publisher",
+    "description": "Aggregates multiple sensor readings and publishes a formatted summary to an MQTT topic or a HA markdown card helper every minute.",
+    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/REPLACE/raw/sensor-dashboard.js",
+    "gist_url": "https://gist.github.com/rocklobster42195/REPLACE",
+    "tags": ["sensor", "monitoring", "mqtt"],
+    "icon": "mdi:chart-line",
+    "color": "#2980b9",
+    "screenshot": ""
   }
 ]
