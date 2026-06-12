@@ -49,27 +49,12 @@ btnSaveUrl.addEventListener('click', () => {
 document.getElementById('btnBannerClose').addEventListener('click', () => banner.classList.add('hidden'));
 jsaUrlInput.addEventListener('keydown', e => { if (e.key === 'Enter') btnSaveUrl.click(); });
 
-// Config modal
-const configModal   = document.getElementById('configModal');
-const modalUrlInput = document.getElementById('modalUrlInput');
-const btnConfig     = document.getElementById('btnConfig');
-const btnModalCancel = document.getElementById('btnModalCancel');
-const btnModalSave  = document.getElementById('btnModalSave');
-
-btnConfig.addEventListener('click', () => {
-  modalUrlInput.value = getJsaUrl();
-  configModal.classList.remove('hidden');
-  modalUrlInput.focus();
+// Config button → show banner
+document.getElementById('btnConfig').addEventListener('click', () => {
+  banner.classList.remove('hidden');
+  jsaUrlInput.value = getJsaUrl();
+  jsaUrlInput.focus();
 });
-btnModalCancel.addEventListener('click', () => configModal.classList.add('hidden'));
-btnModalSave.addEventListener('click', () => {
-  saveJsaUrl(modalUrlInput.value);
-  configModal.classList.add('hidden');
-  updateBanner();
-  renderGrid();
-});
-configModal.addEventListener('click', e => { if (e.target === configModal) configModal.classList.add('hidden'); });
-modalUrlInput.addEventListener('keydown', e => { if (e.key === 'Enter') btnModalSave.click(); });
 
 // Search
 document.getElementById('searchInput').addEventListener('input', e => {
@@ -202,39 +187,111 @@ function mdiClass(icon) {
   return 'mdi mdi-' + icon.replace(/^mdi[:-]/, '');
 }
 
-function createCard(script) {
-  const jsaUrl = getJsaUrl();
-  const card = document.createElement('div');
-  card.className = 'card' + (script.pinned ? ' card--pinned' : '');
+function buildPlaceholder(script) {
+  const color = script.color || 'var(--accent)';
+  const div = document.createElement('div');
+  div.className = 'card-placeholder';
+  div.innerHTML = `<div class="icon-wrap" style="background:${escHtml(color)}22"><i class="${mdiClass(script.icon)}" style="color:${escHtml(color)}"></i></div>`;
+  return div;
+}
 
-  // Image / placeholder + New badge wrapper
-  const imageWrap = document.createElement('div');
-  imageWrap.className = 'card-image-wrap';
+function carouselArrow(dir) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = `carousel-arrow carousel-arrow--${dir}`;
+  btn.innerHTML = dir === 'prev'
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="15 18 9 12 15 6"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="9 18 15 12 9 6"/></svg>`;
+  return btn;
+}
 
-  if (script.screenshot) {
+function buildImageSection(shots, script) {
+  const wrap = document.createElement('div');
+  wrap.className = 'card-image-wrap';
+
+  if (shots.length === 0) {
+    wrap.appendChild(buildPlaceholder(script));
+  } else if (shots.length === 1) {
     const img = document.createElement('img');
     img.className = 'card-image';
-    img.src = script.screenshot;
+    img.src = shots[0];
     img.alt = script.name;
     img.onerror = () => img.replaceWith(buildPlaceholder(script));
-    imageWrap.appendChild(img);
+    wrap.appendChild(img);
   } else {
-    imageWrap.appendChild(buildPlaceholder(script));
+    const track = document.createElement('div');
+    track.className = 'carousel-track';
+    shots.forEach((src, i) => {
+      const img = document.createElement('img');
+      img.className = 'card-image' + (i === 0 ? ' active' : '');
+      img.src = src;
+      img.alt = `${script.name} ${i + 1}`;
+      img.loading = 'lazy';
+      track.appendChild(img);
+    });
+    wrap.appendChild(track);
+
+    let idx = 0;
+    const imgs = () => track.querySelectorAll('.card-image');
+    const dots = () => wrap.querySelectorAll('.carousel-dot');
+
+    function go(delta) {
+      idx = (idx + delta + shots.length) % shots.length;
+      imgs().forEach((el, i) => el.classList.toggle('active', i === idx));
+      dots().forEach((el, i) => el.classList.toggle('active', i === idx));
+    }
+
+    const prev = carouselArrow('prev');
+    const next = carouselArrow('next');
+    prev.addEventListener('click', e => { e.stopPropagation(); go(-1); });
+    next.addEventListener('click', e => { e.stopPropagation(); go(1); });
+    wrap.appendChild(prev);
+    wrap.appendChild(next);
+
+    const dotsEl = document.createElement('div');
+    dotsEl.className = 'carousel-dots';
+    shots.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', e => { e.stopPropagation(); go(i - idx); });
+      dotsEl.appendChild(dot);
+    });
+    wrap.appendChild(dotsEl);
+
+    let touchX = 0;
+    wrap.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+    wrap.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+    }, { passive: true });
   }
 
   if (script.pinned) {
     const pin = document.createElement('span');
     pin.className = 'card-pin-badge';
     pin.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg> Featured`;
-    imageWrap.appendChild(pin);
+    wrap.appendChild(pin);
   }
 
   const newBadge = document.createElement('span');
   newBadge.className = 'card-new-badge hidden';
   newBadge.textContent = 'New';
-  imageWrap.appendChild(newBadge);
+  wrap.appendChild(newBadge);
 
-  card.appendChild(imageWrap);
+  return wrap;
+}
+
+const ICON_CLIPBOARD = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>`;
+const ICON_CHECK     = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>`;
+
+function createCard(script) {
+  const jsaUrl = getJsaUrl();
+  const card = document.createElement('div');
+  card.className = 'card' + (script.pinned ? ' card--pinned' : '');
+
+  const shots = [].concat(script.screenshot).filter(Boolean);
+  card.appendChild(buildImageSection(shots, script));
 
   const body = document.createElement('div');
   body.className = 'card-body';
@@ -278,6 +335,21 @@ function createCard(script) {
     window.open(`${jsaUrl}/?import=${encodeURIComponent(script.gist_raw)}`, '_blank');
   });
 
+  const copyBtn = document.createElement('button');
+  copyBtn.type = 'button';
+  copyBtn.className = 'btn-copy';
+  copyBtn.title = 'Copy import URL';
+  copyBtn.innerHTML = ICON_CLIPBOARD;
+  copyBtn.addEventListener('click', () => {
+    const url = jsaUrl
+      ? `${jsaUrl}/?import=${encodeURIComponent(script.gist_raw)}`
+      : script.gist_raw;
+    navigator.clipboard.writeText(url).then(() => {
+      copyBtn.innerHTML = ICON_CHECK;
+      setTimeout(() => { copyBtn.innerHTML = ICON_CLIPBOARD; }, 1500);
+    });
+  });
+
   const gistLink = document.createElement('a');
   gistLink.className = 'btn-gist';
   gistLink.href = parseGistRaw(script.gist_raw).gist_url || script.gist_raw;
@@ -287,24 +359,13 @@ function createCard(script) {
   gistLink.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> Source`;
 
   footer.appendChild(addBtn);
+  footer.appendChild(copyBtn);
   footer.appendChild(gistLink);
   card.appendChild(footer);
 
   loadGistMeta(script, card);
 
   return card;
-}
-
-function buildPlaceholder(script) {
-  const color = script.color || 'var(--accent)';
-  const div = document.createElement('div');
-  div.className = 'card-placeholder';
-  div.innerHTML = `
-    <div class="icon-wrap" style="background:${escHtml(color)}22; color:${escHtml(color)}">
-      <i class="${mdiClass(script.icon)}" style="color:${escHtml(color)}"></i>
-    </div>
-    `;
-  return div;
 }
 
 function escHtml(str) {

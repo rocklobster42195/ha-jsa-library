@@ -5,7 +5,7 @@ A curated collection of scripts for the [JS Automations](https://github.com/rock
 ## Usage
 
 1. Open the library at **https://rocklobster42195.github.io/ha-jsa-library/**
-2. Click **JSA URL** (top right) and enter your addon address, e.g. `http://192.168.1.100:8123`
+2. Click **JSA URL** (top right) and enter your addon address, e.g. `http://192.168.1.100:8123/68e038a4_js_automations`
 3. Browse scripts — filter by tag, search by name/description, or sort by newest
 4. Click **Add to JSA** on any script — the import wizard opens with the URL pre-filled
 5. Click **Preview**, then **Import**
@@ -18,6 +18,15 @@ A curated collection of scripts for the [JS Automations](https://github.com/rock
 - **Featured** — scripts with `pinned: true` always appear at the top
 - **"New" badge** — shown automatically on scripts updated within the last 14 days
 - **Grid / List view** — toggle in the toolbar; preference is saved per browser
+
+## Contributing a script
+
+Scripts in this library should go beyond what Home Assistant's built-in YAML automations can do — think external API integrations, complex multi-step logic, data processing, or custom Lovelace cards. Simple on/off automations are a better fit for the regular automation editor.
+
+**How to submit:**
+1. Create a public GitHub Gist with your `.js` script
+2. Take a screenshot (800 × 450 px recommended)
+3. Open a [pull request](https://github.com/rocklobster42195/ha-jsa-library/pulls) adding your entry to `scripts.json` and your screenshot to the `screenshots/` folder
 
 ## Adding a script
 
@@ -45,7 +54,7 @@ Edit `scripts.json` and add an entry:
 | `tags`        | ✅        | Used for tag filter                                                   |
 | `icon`        | ✅        | Any [MDI icon](https://pictogrammers.com/library/mdi/) — `mdi:robot` |
 | `color`       | ❌        | Hex color for the icon placeholder background                        |
-| `screenshot`  | ❌        | Path relative to repo root — `screenshots/my-script.webp`            |
+| `screenshot`  | ❌        | Path (string) or array of paths — `"screenshots/a.webp"` or `["screenshots/a.webp", "screenshots/b.webp"]` — multiple images show a carousel |
 | `author`      | ❌        | GitHub username — displayed as a `@username` link on the card        |
 | `pinned`      | ❌        | `true` to show script at the top of the grid as "Featured"           |
 

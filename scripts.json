@@ -3,10 +3,10 @@
     "name": "OpenLigaDB",
     "description": "Multi-team football tracker with configurable cards.",
     "gist_raw": "https://gist.github.com/rocklobster42195/c46f3bc1dd15f0d1579893f108c76c49/raw/28b1b071087323ec1d1db1ec1ae253a8e141ec02/OpenLigaDB.js",
-    "tags": ["JSA Pack", "card"],
+    "tags": ["JSA Pack", "beta", "lovelace"],
     "icon": "mdi:soccer",
     "color": "#009A44",
-    "screenshot": "screenshots/openligadb_card.png",
+    "screenshot": ["screenshots/openligadb_card_0.png", "screenshots/openligadb_card_1.png"],
     "pinned": true,
     "author": "rocklobster42195"
   },
@@ -17,7 +17,7 @@
     "tags": ["integration"],
     "icon": "mdi:lock-smart",
     "color": "#00b4f0",
-    "screenshot": "",
+    "screenshot": "screenshots/tedee_keypad_device.png",
     "pinned": true,
     "author": "rocklobster42195"
   }

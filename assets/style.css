@@ -22,6 +22,7 @@ body {
   font-size: 15px;
   line-height: 1.6;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* Header */
@@ -51,10 +52,10 @@ header {
   font-weight: 600;
   color: var(--text);
 }
-.logo svg {
-  width: 22px;
-  height: 22px;
-  stroke: var(--accent);
+.logo-icon {
+  font-size: 22px;
+  color: var(--accent);
+  line-height: 1;
 }
 .btn-config {
   display: flex;
@@ -164,6 +165,12 @@ main {
   text-decoration: none;
 }
 .hero a:hover { text-decoration: underline; }
+.hero-contribute {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--text-muted);
+  opacity: 0.8;
+}
 
 /* Tag filter */
 .tag-filter {
@@ -485,43 +492,76 @@ main {
   gap: 6px;
 }
 .btn-gist:hover { color: var(--text); border-color: var(--accent); }
-
-/* Modal */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-}
-.modal-overlay.hidden { display: none; }
-.modal {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px;
-  width: 420px;
-  max-width: calc(100vw - 32px);
-  box-shadow: var(--shadow);
-}
-.modal h3 { font-size: 17px; margin-bottom: 8px; }
-.modal p { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; }
-.modal input { width: 100%; margin-bottom: 20px; }
-.modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
-.btn-secondary {
+.btn-copy {
   background: var(--surface-2);
   color: var(--text-muted);
   border: 1px solid var(--border);
-  padding: 8px 18px;
+  padding: 8px 10px;
   border-radius: 8px;
+  font-size: 13px;
   cursor: pointer;
-  font-size: 14px;
+  display: flex;
+  align-items: center;
+  transition: color .15s, border-color .15s;
 }
-.btn-secondary:hover { color: var(--text); }
+.btn-copy:hover { color: var(--text); border-color: var(--accent); }
+
+/* Carousel */
+.carousel-track {
+  position: relative;
+  height: 150px;
+}
+.carousel-track .card-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity .25s;
+}
+.carousel-track .card-image.active { opacity: 1; }
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,.5);
+  border: none;
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .15s;
+  z-index: 1;
+}
+.card-image-wrap:hover .carousel-arrow { opacity: 1; }
+.carousel-arrow--prev { left: 6px; }
+.carousel-arrow--next { right: 6px; }
+.carousel-dots {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 1;
+}
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,.4);
+  cursor: pointer;
+  padding: 0;
+  transition: background .15s;
+}
+.carousel-dot.active { background: #fff; }
+
 
 /* Empty state */
 .empty {
@@ -566,7 +606,8 @@ main {
   justify-content: center;
 }
 .grid.view-list .btn-add,
-.grid.view-list .btn-gist { width: 100%; justify-content: center; }
+.grid.view-list .btn-gist,
+.grid.view-list .btn-copy { width: 100%; justify-content: center; height: 34px; flex: none; }
 
 @media (max-width: 600px) {
   main { padding: 20px 16px 48px; }
