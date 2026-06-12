@@ -20,5 +20,15 @@
     "screenshot": "screenshots/tedee_keypad_device.png",
     "pinned": true,
     "author": "rocklobster42195"
+  },
+  {
+    "name": "Waschmaschinen Skript",
+    "description": "Überwacht die Waschmaschine, setzt sensor.waschmaschine_status mit Dauer und Endezeit.",
+    "gist_raw": "https://gist.githubusercontent.com/rocklobster42195/d6eb9c94714688233509610fae2c3d1e/raw/1177c3fdd4b0999efde2970fa0883085877ab17d/waschmaschinen_skript.js",
+    "tags": ["demo"],
+    "icon": "mdi:washing-machine",
+    "color": "#009A44",
+    "screenshot": "",
+    "author": "rocklobster42195"
   }
 ]
